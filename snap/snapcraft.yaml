@@ -1,0 +1,81 @@
+name: lighthouse
+title: lighthouse
+base: core22
+adopt-info: lighthouse
+summary: Rust implemetation of ehtereum consensus client
+license: Apache-2.0
+contact: info@dwellir.com
+issues: https://github.com/dwellir-public/snap-lighthouse/issues
+source-code: https://github.com/dwellir-public/snap-lighthouse/
+website: https://www.dwellir.com
+grade: stable
+confinement: strict
+
+architectures:
+  - amd64
+
+description: |
+  https://github.com/sigp/lighthouse
+
+  snap set lighthouse service-args="" 
+
+parts:
+  lighthouse:
+    plugin: rust
+    source: https://github.com/sigp/lighthouse.git
+    source-tag: v5.2.1
+    source-depth: 1
+    build-packages:
+      - build-essential
+      - git 
+      - libclang-dev 
+      - pkg-config
+      - protobuf-compiler
+      - gcc 
+      - g++ 
+      - make 
+      - cmake 
+      - llvm-dev 
+      - clang
+    # Make the commit hash available for snap info
+    override-pull: |
+      craftctl default
+      craftctl set version="5.2.1-$(git rev-parse --short HEAD)"
+      rustup default stable
+      rustup update
+
+    override-build: |
+      export CARGO_INSTALL_EXTRA_FLAGS="--no-default-features" 
+      export PROFILE=maxperf 
+      make install
+      make install-lcli
+
+  wrappers:
+    plugin: dump
+    source-type: local
+    source: .
+    stage:
+      - wrappers/
+  
+  utils:
+      plugin: dump
+      source-type: local
+      source: .
+      stage:
+        - utils/
+
+apps:
+  lighthouse-daemon:
+    command: wrappers/start-lighthouse.bash
+    daemon: simple
+    install-mode: disable
+    refresh-mode: endure
+    restart-condition: never
+    plugs:
+      - network
+      - network-bind
+    environment:
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
+  lcli:
+    command: bin/lcli
