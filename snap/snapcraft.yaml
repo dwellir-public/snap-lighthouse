@@ -50,6 +50,11 @@ parts:
       make install
       make install-lcli
 
+      # Put the binaries in place for stage,prime
+      mkdir -p "${CRAFT_PART_INSTALL}"/bin
+      cp target/maxperf/lighthouse "${CRAFT_PART_INSTALL}"/bin
+      cp target/maxperf/lcli "${CRAFT_PART_INSTALL}"/bin/
+
   wrappers:
     plugin: dump
     source-type: local
