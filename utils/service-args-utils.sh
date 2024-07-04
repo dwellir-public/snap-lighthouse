@@ -2,7 +2,6 @@
 
 . "$SNAP/utils/utils.sh"
 
-BASE_PATH="$SNAP_COMMON/lighthouse_base"
 SERVICE_ARGS_FILE="$SNAP_COMMON/service-arguments"
 
 write_service_args_file()
@@ -23,7 +22,7 @@ get_service_args()
     service_args="$(snapctl get service-args)"
     if [ -z "$service_args" ]; then
         log "Setting default service args"
-        service_args="node"
+        service_args=""
         snapctl set service-args="$service_args"
     fi
     echo "$service_args"
