@@ -32,3 +32,6 @@ Monitor logs:
 Monitor logs:
   sudo snap logs lighthouse -f
 
+Even mode logs:
+  tail -f /root/snap/lighthouse/x1/.lighthouse/mainnet/beacon/logs/beacon.log
+
