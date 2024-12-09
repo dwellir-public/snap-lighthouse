@@ -23,7 +23,7 @@ parts:
   lighthouse:
     plugin: rust
     source: https://github.com/sigp/lighthouse.git
-    source-tag: v5.3.0
+    source-tag: v6.0.0
     source-depth: 1
     build-packages:
       - build-essential
@@ -40,7 +40,7 @@ parts:
     # Make the commit hash available for snap info
     override-pull: |
       craftctl default
-      craftctl set version="5.3.0-$(git rev-parse --short HEAD)"
+      craftctl set version="6.0.0-$(git rev-parse --short HEAD)"
       rustup default stable
       rustup update
 
